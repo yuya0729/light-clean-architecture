@@ -54,7 +54,6 @@ func IsExistsUser(c echo.Context, userID int) error {
 }
 
 func CreateTask(c echo.Context, userID int, title string) error {
-	// userが存在するか
 	if err := gateway.CreateTask(c, userID, title); err != nil {
 		return err
 	}

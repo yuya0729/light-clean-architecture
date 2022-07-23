@@ -23,7 +23,7 @@ func GetUsers(c echo.Context) ([]*entity.User, error) {
 	rows, err := DB.Query("SELECT id, name FROM users")
 	if err != nil {
 		log.Println(err)
-		return nil, errors.New("internal Server Error. adapter/gateway/GetUsers")
+		return nil, err
 	}
 	for rows.Next() {
 		if err := rows.Scan(&user.Id, &user.Name); err != nil {
@@ -39,7 +39,7 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 	err := DB.QueryRow("SELECT id, name FROM users WHERE id = $1", userID).Scan(&user.Id, &user.Name)
 	if err != nil {
 		log.Println(err)
-		return nil, errors.New("internal Server Error. adapter/gateway/GetUser")
+		return nil, err
 	}
 	return user, nil
 }
@@ -60,7 +60,7 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 	`)
 	if err != nil {
 		log.Println(err)
-		return nil, errors.New("internal Server Error. adapter/gateway/GetTasks")
+		return nil, err
 	}
 	for rows.Next() {
 		if err := rows.Scan(&task.Id, &task.Title, &task.Name); err != nil {
@@ -76,8 +76,8 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 func CreateTask(c echo.Context, userID int, title string) error {
 	ins, err := DB.Prepare("INSERT INTO tasks(user_id, title) VALUES($1, $2)")
 	if err != nil {
-		log.Fatal(err)
-		return errors.New("internal Server Error. adapter/gateway/GetTasks")
+		log.Println(err)
+		return err
 	}
 	ins.Exec(userID, title)
 	return nil

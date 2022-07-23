@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"errors"
-
 	"github.com/labstack/echo/v4"
 	interactor "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/Interactor"
 )
@@ -23,7 +21,7 @@ func GetUsers(c echo.Context) error {
 func GetUser(c echo.Context) error {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return errors.New("internal Server Error. adapter/Controller/GetUser")
+		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
 	}
 	u, err := interactor.GetUser(c, userID)
 	if err != nil {
