@@ -29,6 +29,10 @@ func Serve() {
 	api := e.Group("/api")
 	api.GET("/users", controller.GetUsers)
 	api.GET("/users/:id", controller.GetUser)
+	// create user
+	// delete user
+	// todo app化
+	// CRUD todo
 
 	e.Start(":8080")
 }
