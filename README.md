@@ -1,4 +1,4 @@
-# echo-env
+# light-clean-architecture
 
 Goのフレームワークである[echo](https://github.com/labstack/echo)を使い、[air](https://github.com/cosmtrek/air)でホットロードするアプリケーション環境。
 
