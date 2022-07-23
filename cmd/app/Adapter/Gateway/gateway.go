@@ -13,30 +13,10 @@ import (
 
 var DB *sql.DB
 
-// TODO:
-// initでしたい
-// ->mainパッケージでやる
-// それか、mainでinitして変数に渡すか、structに渡すみたいな感じ？
-// func init() {
-// 	var err error
-// 	dsn := "user=postgres host=postgres port=5432 dbname=postgres password=postgres sslmode=disable"
-// 	DB, err := sql.Open("postgres", dsn)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer DB.Close()
-// }
-
 // usecaseから呼ばれる
 // SQL叩く
 // entityに渡す
 func GetUsers(c echo.Context) ([]*entity.User, error) {
-	var err error
-	dsn := "user=postgres host=postgres port=5432 dbname=postgres password=postgres sslmode=disable"
-	DB, err := sql.Open("postgres", dsn)
-	if err != nil {
-		panic(err)
-	}
 	user := entity.User{}
 	users := []*entity.User{}
 	rows, err := DB.Query("SELECT id, name FROM users")
