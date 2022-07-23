@@ -26,17 +26,17 @@ func GetUsers(c echo.Context) ([]*entity.User, error) {
 		return nil, err
 	}
 	for rows.Next() {
-		if err := rows.Scan(&user.Id, &user.Name); err != nil {
+		if err := rows.Scan(&user.ID, &user.Name); err != nil {
 			return nil, errors.New("connot connect SQL")
 		}
-		users = append(users, &entity.User{Id: user.Id, Name: user.Name})
+		users = append(users, &entity.User{ID: user.ID, Name: user.Name})
 	}
 	return users, nil
 }
 
 func GetUser(c echo.Context, userID int) (*entity.User, error) {
 	user := &entity.User{}
-	err := DB.QueryRow("SELECT id, name FROM users WHERE id = $1", userID).Scan(&user.Id, &user.Name)
+	err := DB.QueryRow("SELECT id, name FROM users WHERE id = $1", userID).Scan(&user.ID, &user.Name)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -63,15 +63,13 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 		return nil, err
 	}
 	for rows.Next() {
-		if err := rows.Scan(&task.Id, &task.Title, &task.Name); err != nil {
+		if err := rows.Scan(&task.ID, &task.Title, &task.Name); err != nil {
 			return nil, errors.New("connot connect SQL")
 		}
-		tasks = append(tasks, &entity.Task{Id: task.Id, Title: task.Title, Name: task.Name})
+		tasks = append(tasks, &entity.Task{ID: task.ID, Title: task.Title, Name: task.Name})
 	}
 	return tasks, nil
 }
-
-// TODO: log形式の統一
 
 func CreateTask(c echo.Context, userID int, title string) error {
 	ins, err := DB.Prepare("INSERT INTO tasks(user_id, title) VALUES($1, $2)")

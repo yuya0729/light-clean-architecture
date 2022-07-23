@@ -13,7 +13,6 @@ import (
 // service的な役割
 // interfaceがあっても良い
 
-// TODO: error周りのリファクタ
 func GetUsers(c echo.Context) ([]*entity.User, error) {
 	u, err := gateway.GetUsers(c)
 	if err != nil {
