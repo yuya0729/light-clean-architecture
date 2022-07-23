@@ -26,7 +26,9 @@ func Serve() {
 	gateway.DB = DB
 
 	// APIルーティング
-	e.GET("/api/users", controller.GetUsers)
+	api := e.Group("/api")
+	api.GET("/users", controller.GetUsers)
+	api.GET("/users/:id", controller.GetUser)
 
 	e.Start(":8080")
 }
