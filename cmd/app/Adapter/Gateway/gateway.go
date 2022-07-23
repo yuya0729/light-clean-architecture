@@ -70,3 +70,15 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 	}
 	return tasks, nil
 }
+
+// TODO: log形式の統一
+
+func CreateTask(c echo.Context, userID int, title string) error {
+	ins, err := DB.Prepare("INSERT INTO tasks(user_id, title) VALUES($1, $2)")
+	if err != nil {
+		log.Fatal(err)
+		return errors.New("internal Server Error. adapter/gateway/GetTasks")
+	}
+	ins.Exec(userID, title)
+	return nil
+}

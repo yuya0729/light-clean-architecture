@@ -30,6 +30,7 @@ func Serve() {
 	api.GET("/users", controller.GetUsers)
 	api.GET("/users/:id", controller.GetUser)
 	api.GET("/tasks", controller.GetTasks)
+	api.POST("/tasks", controller.CreateTask)
 	// create user
 	// delete user
 	// todo app化
