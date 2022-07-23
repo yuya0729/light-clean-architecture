@@ -10,6 +10,10 @@ import (
 // その関数ではrepositoryを呼び出す
 // service的な役割
 // interfaceがあっても良い
-func GetUsers(c echo.Context) *entity.User {
-	return gateway.GetUsers(c)
+func GetUsers(c echo.Context) ([]*entity.User, error) {
+	u, err := gateway.GetUsers(c)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }

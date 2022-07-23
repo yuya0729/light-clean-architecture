@@ -9,6 +9,9 @@ import (
 
 // driverで定義されたエンドポイントの関数を定義する
 func GetUsers(c echo.Context) error {
-	u := interactor.GetUsers(c)
+	u, err := interactor.GetUsers(c)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+	}
 	return c.JSON(http.StatusOK, u)
 }

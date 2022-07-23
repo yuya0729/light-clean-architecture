@@ -8,12 +8,6 @@ import (
 
 // routerとかinit dbとか
 func Serve() {
-	// var err error
-	// dsn := "user=postgres host=postgres port=5432 dbname=postgres password=postgres sslmode=disable"
-	// conn, err := sql.Open("postgres", dsn)
-	// if err != nil {
-	// 	panic(err)
-	// }
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
