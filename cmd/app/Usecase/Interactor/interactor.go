@@ -17,3 +17,11 @@ func GetUsers(c echo.Context) ([]*entity.User, error) {
 	}
 	return u, nil
 }
+
+func GetUser(c echo.Context, userID int) (*entity.User, error) {
+	u, err := gateway.GetUser(c, userID)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
+}
