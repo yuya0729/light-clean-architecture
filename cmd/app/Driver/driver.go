@@ -33,8 +33,7 @@ func Serve() {
 	api.POST("/tasks", controller.CreateTask)
 	// create user
 	// delete user
-	// todo app化
-	// CRUD todo
+	// UD todo
 
 	e.Start(":8080")
 }
