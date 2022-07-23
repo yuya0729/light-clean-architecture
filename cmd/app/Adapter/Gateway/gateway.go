@@ -43,3 +43,30 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 	}
 	return user, nil
 }
+
+func GetTasks(c echo.Context) ([]*entity.Task, error) {
+	task := entity.Task{}
+	tasks := []*entity.Task{}
+	rows, err := DB.Query(`
+		SELECT
+			tasks.id as id,
+			tasks.title,
+			users.name
+		FROM
+			tasks
+			JOIN
+				users
+			ON users.id = tasks.user_id
+	`)
+	if err != nil {
+		log.Println(err)
+		return nil, errors.New("internal Server Error. adapter/gateway/GetTasks")
+	}
+	for rows.Next() {
+		if err := rows.Scan(&task.Id, &task.Title, &task.Name); err != nil {
+			return nil, errors.New("connot connect SQL")
+		}
+		tasks = append(tasks, &entity.Task{Id: task.Id, Title: task.Title, Name: task.Name})
+	}
+	return tasks, nil
+}

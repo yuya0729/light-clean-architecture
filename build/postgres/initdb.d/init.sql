@@ -17,4 +17,18 @@ CREATE TABLE users
 
 CREATE TRIGGER update_tri_users BEFORE UPDATE ON users FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
 
-INSERT INTO users (name, email, password) VALUES ('user1', 'user1@example.com', 'user1');
+INSERT INTO users (name, email, password) VALUES ('user1', 'user1@example.com', 'user1'), ('user2', 'user2@example.com', 'user2');
+
+CREATE TABLE tasks
+(
+    id SERIAL NOT NULL PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) on DELETE CASCADE
+);
+
+CREATE TRIGGER update_tri_users BEFORE UPDATE ON tasks FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
+
+INSERT INTO tasks (user_id, title) VALUES (1, '洗い物'), (2, '洗濯');

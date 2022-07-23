@@ -29,6 +29,7 @@ func Serve() {
 	api := e.Group("/api")
 	api.GET("/users", controller.GetUsers)
 	api.GET("/users/:id", controller.GetUser)
+	api.GET("/tasks", controller.GetTasks)
 	// create user
 	// delete user
 	// todo app化

@@ -25,3 +25,11 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 	}
 	return u, nil
 }
+
+func GetTasks(c echo.Context) ([]*entity.Task, error) {
+	t, err := gateway.GetTasks(c)
+	if err != nil {
+		return nil, err
+	}
+	return t, nil
+}

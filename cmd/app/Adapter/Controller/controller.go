@@ -31,3 +31,11 @@ func GetUser(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, u)
 }
+
+func GetTasks(c echo.Context) error {
+	t, err := interactor.GetTasks(c)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+	}
+	return c.JSON(http.StatusOK, t)
+}
