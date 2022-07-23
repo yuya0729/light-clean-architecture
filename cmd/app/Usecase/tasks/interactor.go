@@ -1,11 +1,11 @@
-package interactor
+package tasks
 
 import (
-	"github.com/labstack/echo/v4"
-	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
+	"errors"
 
-	users "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/Interactor/users"
-	tasks "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/tasks"
+	"github.com/labstack/echo/v4"
+	gateway "github.com/yuya0729/light-clean-architecture/cmd/app/Adapter/Gateway"
+	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 )
 
 // controllerから関数を呼び出す
@@ -13,26 +13,32 @@ import (
 // service的な役割
 // interfaceがあっても良い
 
-func GetUsers(c echo.Context) ([]*entity.User, error) {
-	return users.GetUsers(c)
-}
-
-func GetUser(c echo.Context, userID int) (*entity.User, error) {
-	return users.GetUser(c, userID)
-}
-
 func GetTasks(c echo.Context) ([]*entity.Task, error) {
-	return tasks.GetTasks(c)
+	t, err := gateway.GetTasks(c)
+	if err != nil {
+		return nil, err
+	}
+	return t, nil
 }
 
 func BindCreateTask(c echo.Context) (*entity.CreateTask, error) {
-	return tasks.BindCreateTask(c)
+	task := entity.CreateTask{}
+	if err := c.Bind(&task); err != nil {
+		return nil, errors.New("bad request")
+	}
+	return &task, nil
 }
 
 func IsExistsUser(c echo.Context, userID int) error {
-	return tasks.IsExistsUser(c, userID)
+	if _, err := gateway.GetUser(c, userID); err != nil {
+		return errors.New("not found")
+	}
+	return nil
 }
 
 func CreateTask(c echo.Context, userID int, title string) error {
-	return tasks.CreateTask(c, userID, title)
+	if err := gateway.CreateTask(c, userID, title); err != nil {
+		return err
+	}
+	return nil
 }
