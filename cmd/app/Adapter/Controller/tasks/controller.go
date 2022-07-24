@@ -8,6 +8,10 @@ import (
 	interactor "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/Interactor"
 )
 
+// TODO:
+// err != nil{return c.JSON(statuscode, err)}
+// みたいな感じにする？
+
 func GetTasks(c echo.Context) error {
 	t, err := interactor.GetTasks(c)
 	if err != nil {
@@ -47,7 +51,7 @@ func UpdateTask(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, `{"message": "not found"}`)
 	}
 
-	if err = interactor.UpdateTask(c, task.UserID, task.Title); err != nil {
+	if err = interactor.UpdateTask(c, task.UserID, task.Title, taskID); err != nil {
 		return c.JSON(http.StatusInternalServerError, `{"message": "internal server error"}`)
 	}
 	return c.JSON(http.StatusOK, `{"message": "ok"}`)

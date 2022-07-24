@@ -37,8 +37,8 @@ func CreateTask(c echo.Context, userID int, title string) error {
 	return tasks.CreateTask(c, userID, title)
 }
 
-func UpdateTask(c echo.Context, userID int, title string) error {
-	return tasks.UpdateTask(c, userID, title)
+func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
+	return tasks.UpdateTask(c, userID, title, taskID)
 }
 
 func IsExistsTask(c echo.Context, taskID int) error {

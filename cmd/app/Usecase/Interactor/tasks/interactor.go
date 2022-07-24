@@ -43,8 +43,8 @@ func CreateTask(c echo.Context, userID int, title string) error {
 	return nil
 }
 
-func UpdateTask(c echo.Context, userID int, title string) error {
-	if err := gateway.UpdateTask(c, userID, title); err != nil {
+func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
+	if err := gateway.UpdateTask(c, userID, title, taskID); err != nil {
 		return err
 	}
 	return nil

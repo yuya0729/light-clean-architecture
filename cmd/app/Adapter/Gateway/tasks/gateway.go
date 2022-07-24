@@ -68,12 +68,12 @@ func CreateTask(c echo.Context, DB *sql.DB, userID int, title string) error {
 	return nil
 }
 
-func UpdateTask(c echo.Context, DB *sql.DB, userID int, title string) error {
-	ins, err := DB.Prepare("UPDATE tasks SET (user_id, title) VALUES($1, $2)")
+func UpdateTask(c echo.Context, DB *sql.DB, userID int, title string, taskID int) error {
+	upd, err := DB.Prepare("UPDATE tasks SET user_id = $1, title = $2 WHERE id = $3")
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	ins.Exec(userID, title)
+	upd.Exec(userID, title, taskID)
 	return nil
 }
