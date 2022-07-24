@@ -12,6 +12,12 @@ import (
 // err != nil{return c.JSON(statuscode, err)}
 // みたいな感じにする？
 
+// TODO:
+// interface導入？
+
+// TODO:
+// controllerでやっているバリデーションを各層に分散
+
 func GetTasks(c echo.Context) error {
 	t, err := interactor.GetTasks(c)
 	if err != nil {

@@ -34,7 +34,6 @@ func Serve() {
 	api.PUT("/tasks/:id", controller.UpdateTask)
 	api.DELETE("/tasks/:id", controller.DeleteTask)
 	// create user
-	// delete user
 
 	e.Start(":8080")
 }
