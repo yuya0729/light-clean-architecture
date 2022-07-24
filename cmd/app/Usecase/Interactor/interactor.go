@@ -4,8 +4,8 @@ import (
 	"github.com/labstack/echo/v4"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 
+	tasks "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/Interactor/tasks"
 	users "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/Interactor/users"
-	tasks "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/tasks"
 )
 
 // controllerから関数を呼び出す
@@ -21,18 +21,30 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 	return users.GetUser(c, userID)
 }
 
+func IsExistsUser(c echo.Context, userID int) error {
+	return users.IsExistsUser(c, userID)
+}
+
 func GetTasks(c echo.Context) ([]*entity.Task, error) {
 	return tasks.GetTasks(c)
 }
 
-func BindCreateTask(c echo.Context) (*entity.CreateTask, error) {
-	return tasks.BindCreateTask(c)
-}
-
-func IsExistsUser(c echo.Context, userID int) error {
-	return tasks.IsExistsUser(c, userID)
+func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, error) {
+	return tasks.BindCreateUpdateTask(c)
 }
 
 func CreateTask(c echo.Context, userID int, title string) error {
 	return tasks.CreateTask(c, userID, title)
+}
+
+func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
+	return tasks.UpdateTask(c, userID, title, taskID)
+}
+
+func IsExistsTask(c echo.Context, userID int, taskID int) error {
+	return tasks.IsExistsTask(c, userID, taskID)
+}
+
+func DeleteTask(c echo.Context, userID int, taskID int) error {
+	return tasks.DeleteTask(c, userID, taskID)
 }

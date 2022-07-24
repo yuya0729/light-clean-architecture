@@ -21,7 +21,7 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 	return t, nil
 }
 
-func BindCreateTask(c echo.Context) (*entity.CreateTask, error) {
+func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, error) {
 	task := entity.CreateTask{}
 	if err := c.Bind(&task); err != nil {
 		return nil, errors.New("bad request")
@@ -29,8 +29,8 @@ func BindCreateTask(c echo.Context) (*entity.CreateTask, error) {
 	return &task, nil
 }
 
-func IsExistsUser(c echo.Context, userID int) error {
-	if _, err := gateway.GetUser(c, userID); err != nil {
+func IsExistsTask(c echo.Context, userID int, taskID int) error {
+	if _, err := gateway.GetTask(c, userID, taskID); err != nil {
 		return errors.New("not found")
 	}
 	return nil
@@ -38,6 +38,20 @@ func IsExistsUser(c echo.Context, userID int) error {
 
 func CreateTask(c echo.Context, userID int, title string) error {
 	if err := gateway.CreateTask(c, userID, title); err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
+	if err := gateway.UpdateTask(c, userID, title, taskID); err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteTask(c echo.Context, userID int, taskID int) error {
+	if err := gateway.DeleteTask(c, userID, taskID); err != nil {
 		return err
 	}
 	return nil

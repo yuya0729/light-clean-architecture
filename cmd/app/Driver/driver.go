@@ -31,9 +31,9 @@ func Serve() {
 	api.GET("/users/:id", controller.GetUser)
 	api.GET("/tasks", controller.GetTasks)
 	api.POST("/tasks", controller.CreateTask)
+	api.PUT("/tasks/:id", controller.UpdateTask)
+	api.DELETE("/tasks/:id", controller.DeleteTask)
 	// create user
-	// delete user
-	// UD todo
 
 	e.Start(":8080")
 }
