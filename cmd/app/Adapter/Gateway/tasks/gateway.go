@@ -2,7 +2,6 @@ package tasks
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -29,7 +28,7 @@ func GetTasks(c echo.Context, DB *sql.DB) ([]*entity.Task, error) {
 	}
 	for rows.Next() {
 		if err := rows.Scan(&task.ID, &task.Title, &task.Name); err != nil {
-			return nil, errors.New("connot connect SQL")
+			return nil, err
 		}
 		tasks = append(tasks, &entity.Task{ID: task.ID, Title: task.Title, Name: task.Name})
 	}

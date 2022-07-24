@@ -1,8 +1,6 @@
 package users
 
 import (
-	"errors"
-
 	"github.com/labstack/echo/v4"
 	gateway "github.com/yuya0729/light-clean-architecture/cmd/app/Adapter/Gateway"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
@@ -32,7 +30,7 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 
 func IsExistsUser(c echo.Context, userID int) error {
 	if _, err := gateway.GetUser(c, userID); err != nil {
-		return errors.New("not found")
+		return err
 	}
 	return nil
 }

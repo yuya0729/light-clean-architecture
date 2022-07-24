@@ -2,7 +2,6 @@ package users
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -19,7 +18,7 @@ func GetUsers(c echo.Context, DB *sql.DB) ([]*entity.User, error) {
 	}
 	for rows.Next() {
 		if err := rows.Scan(&user.ID, &user.Name); err != nil {
-			return nil, errors.New("connot connect SQL")
+			return nil, err
 		}
 		users = append(users, &entity.User{ID: user.ID, Name: user.Name})
 	}

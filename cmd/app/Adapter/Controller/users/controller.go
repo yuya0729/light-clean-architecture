@@ -1,6 +1,7 @@
 package users
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -12,7 +13,8 @@ import (
 func GetUsers(c echo.Context) error {
 	u, err := interactor.GetUsers(c)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+		msg := fmt.Sprintf(`{"message": %s`, err)
+		return c.JSON(http.StatusBadRequest, msg)
 	}
 	return c.JSON(http.StatusOK, u)
 }
@@ -20,11 +22,13 @@ func GetUsers(c echo.Context) error {
 func GetUser(c echo.Context) error {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+		msg := fmt.Sprintf(`{"message": %s`, err)
+		return c.JSON(http.StatusBadRequest, msg)
 	}
 	u, err := interactor.GetUser(c, userID)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+		msg := fmt.Sprintf(`{"message": %s`, err)
+		return c.JSON(http.StatusBadRequest, msg)
 	}
 	return c.JSON(http.StatusOK, u)
 }
