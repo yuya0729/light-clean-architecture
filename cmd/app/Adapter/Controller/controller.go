@@ -17,11 +17,15 @@ func GetUser(c echo.Context) error {
 	return users.GetUser(c)
 }
 
-//
+// tasks
 func GetTasks(c echo.Context) error {
 	return tasks.GetTasks(c)
 }
 
 func CreateTask(c echo.Context) error {
 	return tasks.CreateTask(c)
+}
+
+func UpdateTask(c echo.Context) error {
+	return tasks.UpdateTask(c)
 }

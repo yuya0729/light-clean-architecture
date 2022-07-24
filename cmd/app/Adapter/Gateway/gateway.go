@@ -32,6 +32,14 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 	return tasks.GetTasks(c, DB)
 }
 
+func GetTask(c echo.Context, taskID int) (*entity.Task, error) {
+	return tasks.GetTask(c, DB, taskID)
+}
+
 func CreateTask(c echo.Context, userID int, title string) error {
 	return tasks.CreateTask(c, DB, userID, title)
+}
+
+func UpdateTask(c echo.Context, userID int, title string) error {
+	return tasks.UpdateTask(c, DB, userID, title)
 }
