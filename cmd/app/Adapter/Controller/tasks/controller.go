@@ -39,19 +39,40 @@ func UpdateTask(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
 	}
-	if err = interactor.IsExistsTask(c, taskID); err != nil {
-		return c.JSON(http.StatusNotFound, `{"message": "not found"}`)
-	}
-
 	task, err := interactor.BindCreateUpdateTask(c)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+	}
+	if err = interactor.IsExistsTask(c, task.UserID, taskID); err != nil {
+		return c.JSON(http.StatusNotFound, `{"message": "not found"}`)
 	}
 	if err = interactor.IsExistsUser(c, task.UserID); err != nil {
 		return c.JSON(http.StatusNotFound, `{"message": "not found"}`)
 	}
 
 	if err = interactor.UpdateTask(c, task.UserID, task.Title, taskID); err != nil {
+		return c.JSON(http.StatusInternalServerError, `{"message": "internal server error"}`)
+	}
+	return c.JSON(http.StatusOK, `{"message": "ok"}`)
+}
+
+func DeleteTask(c echo.Context) error {
+	taskID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+	}
+	userID, err := strconv.Atoi(c.QueryParam("user_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, `{"message": "bad request"}`)
+	}
+	if err = interactor.IsExistsTask(c, userID, taskID); err != nil {
+		return c.JSON(http.StatusNotFound, `{"message": "not found"}`)
+	}
+	if err = interactor.IsExistsUser(c, userID); err != nil {
+		return c.JSON(http.StatusNotFound, `{"message": "not found asdf"}`)
+	}
+
+	if err = interactor.DeleteTask(c, userID, taskID); err != nil {
 		return c.JSON(http.StatusInternalServerError, `{"message": "internal server error"}`)
 	}
 	return c.JSON(http.StatusOK, `{"message": "ok"}`)

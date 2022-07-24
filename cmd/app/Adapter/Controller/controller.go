@@ -29,3 +29,7 @@ func CreateTask(c echo.Context) error {
 func UpdateTask(c echo.Context) error {
 	return tasks.UpdateTask(c)
 }
+
+func DeleteTask(c echo.Context) error {
+	return tasks.DeleteTask(c)
+}

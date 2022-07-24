@@ -29,8 +29,8 @@ func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, error) {
 	return &task, nil
 }
 
-func IsExistsTask(c echo.Context, taskID int) error {
-	if _, err := gateway.GetTask(c, taskID); err != nil {
+func IsExistsTask(c echo.Context, userID int, taskID int) error {
+	if _, err := gateway.GetTask(c, userID, taskID); err != nil {
 		return errors.New("not found")
 	}
 	return nil
@@ -45,6 +45,13 @@ func CreateTask(c echo.Context, userID int, title string) error {
 
 func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
 	if err := gateway.UpdateTask(c, userID, title, taskID); err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteTask(c echo.Context, userID int, taskID int) error {
+	if err := gateway.DeleteTask(c, userID, taskID); err != nil {
 		return err
 	}
 	return nil

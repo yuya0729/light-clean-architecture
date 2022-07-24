@@ -32,9 +32,9 @@ func Serve() {
 	api.GET("/tasks", controller.GetTasks)
 	api.POST("/tasks", controller.CreateTask)
 	api.PUT("/tasks/:id", controller.UpdateTask)
+	api.DELETE("/tasks/:id", controller.DeleteTask)
 	// create user
 	// delete user
-	// D todo
 
 	e.Start(":8080")
 }

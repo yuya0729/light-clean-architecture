@@ -36,7 +36,7 @@ func GetTasks(c echo.Context, DB *sql.DB) ([]*entity.Task, error) {
 	return tasks, nil
 }
 
-func GetTask(c echo.Context, DB *sql.DB, taskID int) (*entity.Task, error) {
+func GetTask(c echo.Context, DB *sql.DB, userID int, taskID int) (*entity.Task, error) {
 	task := &entity.Task{}
 	err := DB.QueryRow(`
 		SELECT
@@ -48,9 +48,9 @@ func GetTask(c echo.Context, DB *sql.DB, taskID int) (*entity.Task, error) {
 			JOIN
 				users
 			ON users.id = tasks.user_id
-		WHERE
-			tasks.id = $1
-	`, taskID).Scan(&task.ID, &task.Title, &task.Name)
+		WHERE tasks.user_id = $1
+			AND tasks.id = $2
+	`, userID, taskID).Scan(&task.ID, &task.Title, &task.Name)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -75,5 +75,15 @@ func UpdateTask(c echo.Context, DB *sql.DB, userID int, title string, taskID int
 		return err
 	}
 	upd.Exec(userID, title, taskID)
+	return nil
+}
+
+func DeleteTask(c echo.Context, DB *sql.DB, userID int, taskID int) error {
+	del, err := DB.Prepare("DELETE FROM tasks WHERE id = $1 AND user_id = $2")
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	del.Exec(taskID, userID)
 	return nil
 }

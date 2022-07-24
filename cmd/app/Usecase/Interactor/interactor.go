@@ -41,6 +41,10 @@ func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
 	return tasks.UpdateTask(c, userID, title, taskID)
 }
 
-func IsExistsTask(c echo.Context, taskID int) error {
-	return tasks.IsExistsTask(c, taskID)
+func IsExistsTask(c echo.Context, userID int, taskID int) error {
+	return tasks.IsExistsTask(c, userID, taskID)
+}
+
+func DeleteTask(c echo.Context, userID int, taskID int) error {
+	return tasks.DeleteTask(c, userID, taskID)
 }
