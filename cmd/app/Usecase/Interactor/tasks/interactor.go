@@ -28,7 +28,7 @@ func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, *myerror.MyError)
 	return &task, nil
 }
 
-func IsExistsTask(c echo.Context, userID int, taskID int) error {
+func IsExistsTask(c echo.Context, userID int, taskID int) *myerror.MyError {
 	if _, err := gateway.GetTask(c, userID, taskID); err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func CreateTask(c echo.Context, userID int, title string) *myerror.MyError {
 	return nil
 }
 
-func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
+func UpdateTask(c echo.Context, userID int, title string, taskID int) *myerror.MyError {
 	if err := gateway.UpdateTask(c, userID, title, taskID); err != nil {
 		return err
 	}

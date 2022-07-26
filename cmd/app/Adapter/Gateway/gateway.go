@@ -33,7 +33,7 @@ func GetTasks(c echo.Context) ([]*entity.Task, *myerror.MyError) {
 	return tasks.GetTasks(c, DB)
 }
 
-func GetTask(c echo.Context, userID int, taskID int) (*entity.Task, error) {
+func GetTask(c echo.Context, userID int, taskID int) (*entity.Task, *myerror.MyError) {
 	return tasks.GetTask(c, DB, userID, taskID)
 }
 
@@ -41,7 +41,7 @@ func CreateTask(c echo.Context, userID int, title string) *myerror.MyError {
 	return tasks.CreateTask(c, DB, userID, title)
 }
 
-func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
+func UpdateTask(c echo.Context, userID int, title string, taskID int) *myerror.MyError {
 	return tasks.UpdateTask(c, DB, userID, title, taskID)
 }
 

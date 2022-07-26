@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	myerror "github.com/yuya0729/light-clean-architecture/cmd/app/Driver/error"
 	interactor "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/Interactor"
 )
 
@@ -50,31 +51,39 @@ func CreateTask(c echo.Context) error {
 			return c.JSON(http.StatusNotFound, err)
 		}
 	}
-	return c.JSON(http.StatusOK, `{"message": "ok"}`)
+	return c.JSON(http.StatusOK, `{"code": 200, "message": "ok"}`)
 }
 
+// TODO: error format
 func UpdateTask(c echo.Context) error {
-	taskID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
+	taskID, e := strconv.Atoi(c.Param("id"))
+	if e != nil {
+		msg := myerror.New(400, e.Error())
 		return c.JSON(http.StatusBadRequest, msg)
 	}
 	task, err := interactor.BindCreateUpdateTask(c)
 	if err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusBadRequest, msg)
+		switch err.Code {
+		case 400:
+			return c.JSON(http.StatusBadRequest, err)
+		}
 	}
 	if err = interactor.IsExistsTask(c, task.UserID, taskID); err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusNotFound, msg)
+		switch err.Code {
+		case 404:
+			return c.JSON(http.StatusNotFound, err)
+		}
 	}
 	if err = interactor.UpdateTask(c, task.UserID, task.Title, taskID); err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusInternalServerError, msg)
+		switch err.Code {
+		case 404:
+			return c.JSON(http.StatusNotFound, err)
+		}
 	}
-	return c.JSON(http.StatusOK, `{"message": "ok"}`)
+	return c.JSON(http.StatusOK, `{"code": 200, "message": "ok"}`)
 }
 
+// TODO: error format
 func DeleteTask(c echo.Context) error {
 	taskID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

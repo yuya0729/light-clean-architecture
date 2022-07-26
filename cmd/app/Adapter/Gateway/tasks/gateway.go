@@ -36,7 +36,7 @@ func GetTasks(c echo.Context, DB *sql.DB) ([]*entity.Task, *myerror.MyError) {
 	return tasks, nil
 }
 
-func GetTask(c echo.Context, DB *sql.DB, userID int, taskID int) (*entity.Task, error) {
+func GetTask(c echo.Context, DB *sql.DB, userID int, taskID int) (*entity.Task, *myerror.MyError) {
 	task := &entity.Task{}
 	err := DB.QueryRow(`
 		SELECT
@@ -53,7 +53,7 @@ func GetTask(c echo.Context, DB *sql.DB, userID int, taskID int) (*entity.Task, 
 	`, userID, taskID).Scan(&task.ID, &task.Title, &task.Name)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, myerror.New(404, err.Error())
 	}
 	return task, nil
 }
@@ -68,11 +68,11 @@ func CreateTask(c echo.Context, DB *sql.DB, userID int, title string) *myerror.M
 	return nil
 }
 
-func UpdateTask(c echo.Context, DB *sql.DB, userID int, title string, taskID int) error {
+func UpdateTask(c echo.Context, DB *sql.DB, userID int, title string, taskID int) *myerror.MyError {
 	upd, err := DB.Prepare("UPDATE tasks SET user_id = $1, title = $2 WHERE id = $3")
 	if err != nil {
 		log.Println(err)
-		return err
+		return myerror.New(404, err.Error())
 	}
 	upd.Exec(userID, title, taskID)
 	return nil

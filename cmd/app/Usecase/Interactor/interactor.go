@@ -38,11 +38,11 @@ func CreateTask(c echo.Context, userID int, title string) *myerror.MyError {
 	return tasks.CreateTask(c, userID, title)
 }
 
-func UpdateTask(c echo.Context, userID int, title string, taskID int) error {
+func UpdateTask(c echo.Context, userID int, title string, taskID int) *myerror.MyError {
 	return tasks.UpdateTask(c, userID, title, taskID)
 }
 
-func IsExistsTask(c echo.Context, userID int, taskID int) error {
+func IsExistsTask(c echo.Context, userID int, taskID int) *myerror.MyError {
 	return tasks.IsExistsTask(c, userID, taskID)
 }
 
