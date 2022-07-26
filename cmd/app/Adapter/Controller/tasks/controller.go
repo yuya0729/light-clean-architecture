@@ -18,13 +18,14 @@ import (
 
 // TODO:
 // errorの体系化
-// ref: https://zenn.dev/yagi_eng/articles/go-error-handling
 
 func GetTasks(c echo.Context) error {
 	t, err := interactor.GetTasks(c)
 	if err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusBadRequest, msg)
+		switch err.Code {
+		case 404:
+			return c.JSON(http.StatusNotFound, err)
+		}
 	}
 	return c.JSON(http.StatusOK, t)
 }

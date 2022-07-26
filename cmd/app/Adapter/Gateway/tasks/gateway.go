@@ -9,7 +9,7 @@ import (
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 )
 
-func GetTasks(c echo.Context, DB *sql.DB) ([]*entity.Task, error) {
+func GetTasks(c echo.Context, DB *sql.DB) ([]*entity.Task, *myerror.MyError) {
 	task := entity.Task{}
 	tasks := []*entity.Task{}
 	rows, err := DB.Query(`
@@ -25,11 +25,11 @@ func GetTasks(c echo.Context, DB *sql.DB) ([]*entity.Task, error) {
 	`)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, myerror.New(404, err.Error())
 	}
 	for rows.Next() {
 		if err := rows.Scan(&task.ID, &task.Title, &task.Name); err != nil {
-			return nil, err
+			return nil, myerror.New(404, err.Error())
 		}
 		tasks = append(tasks, &entity.Task{ID: task.ID, Title: task.Title, Name: task.Name})
 	}

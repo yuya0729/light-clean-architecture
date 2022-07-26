@@ -12,7 +12,7 @@ import (
 // service的な役割
 // interfaceがあっても良い
 
-func GetTasks(c echo.Context) ([]*entity.Task, error) {
+func GetTasks(c echo.Context) ([]*entity.Task, *myerror.MyError) {
 	t, err := gateway.GetTasks(c)
 	if err != nil {
 		return nil, err
