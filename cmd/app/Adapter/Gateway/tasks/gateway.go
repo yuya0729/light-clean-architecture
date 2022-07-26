@@ -58,7 +58,7 @@ func GetTask(c echo.Context, DB *sql.DB, userID int, taskID int) (*entity.Task, 
 	return task, nil
 }
 
-func CreateTask(c echo.Context, DB *sql.DB, userID int, title string) error {
+func CreateTask(c echo.Context, DB *sql.DB, userID int, title string) *myerror.MyError {
 	ins, err := DB.Prepare("INSERT INTO tasks (user_id, title) VALUES ($1, $2)")
 	if err != nil {
 		log.Println(err)

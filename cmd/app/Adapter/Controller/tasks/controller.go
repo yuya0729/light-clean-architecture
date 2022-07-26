@@ -32,18 +32,22 @@ func GetTasks(c echo.Context) error {
 func CreateTask(c echo.Context) error {
 	task, err := interactor.BindCreateUpdateTask(c)
 	if err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusBadRequest, msg)
-	}
-	if e := interactor.IsExistsUser(c, task.UserID); e != nil {
-		if e.Code == 404 {
-			return c.JSON(http.StatusNotFound, e)
+		switch err.Code {
+		case 400:
+			return c.JSON(http.StatusBadRequest, err)
 		}
-		return c.JSON(http.StatusNotFound, err)
+	}
+	if err := interactor.IsExistsUser(c, task.UserID); err != nil {
+		switch err.Code {
+		case 404:
+			return c.JSON(http.StatusNotFound, err)
+		}
 	}
 	if err = interactor.CreateTask(c, task.UserID, task.Title); err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusBadRequest, msg)
+		switch err.Code {
+		case 404:
+			return c.JSON(http.StatusNotFound, err)
+		}
 	}
 	return c.JSON(http.StatusOK, `{"message": "ok"}`)
 }

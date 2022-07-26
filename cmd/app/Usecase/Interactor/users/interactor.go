@@ -31,7 +31,7 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 
 func IsExistsUser(c echo.Context, userID int) *myerror.MyError {
 	if _, err := gateway.GetUser(c, userID); err != nil {
-		return myerror.New(404, err.Error())
+		return err
 	}
 	return nil
 }

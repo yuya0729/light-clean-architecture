@@ -3,6 +3,7 @@ package tasks
 import (
 	"github.com/labstack/echo/v4"
 	gateway "github.com/yuya0729/light-clean-architecture/cmd/app/Adapter/Gateway"
+	myerror "github.com/yuya0729/light-clean-architecture/cmd/app/Driver/error"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 )
 
@@ -19,10 +20,10 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 	return t, nil
 }
 
-func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, error) {
+func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, *myerror.MyError) {
 	task := entity.CreateTask{}
 	if err := c.Bind(&task); err != nil {
-		return nil, err
+		return nil, myerror.New(400, err.Error())
 	}
 	return &task, nil
 }
@@ -34,7 +35,7 @@ func IsExistsTask(c echo.Context, userID int, taskID int) error {
 	return nil
 }
 
-func CreateTask(c echo.Context, userID int, title string) error {
+func CreateTask(c echo.Context, userID int, title string) *myerror.MyError {
 	if err := gateway.CreateTask(c, userID, title); err != nil {
 		return err
 	}

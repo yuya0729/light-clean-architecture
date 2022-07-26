@@ -37,7 +37,7 @@ func GetTask(c echo.Context, userID int, taskID int) (*entity.Task, error) {
 	return tasks.GetTask(c, DB, userID, taskID)
 }
 
-func CreateTask(c echo.Context, userID int, title string) error {
+func CreateTask(c echo.Context, userID int, title string) *myerror.MyError {
 	return tasks.CreateTask(c, DB, userID, title)
 }
 

@@ -30,11 +30,11 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 	return tasks.GetTasks(c)
 }
 
-func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, error) {
+func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, *myerror.MyError) {
 	return tasks.BindCreateUpdateTask(c)
 }
 
-func CreateTask(c echo.Context, userID int, title string) error {
+func CreateTask(c echo.Context, userID int, title string) *myerror.MyError {
 	return tasks.CreateTask(c, userID, title)
 }
 
