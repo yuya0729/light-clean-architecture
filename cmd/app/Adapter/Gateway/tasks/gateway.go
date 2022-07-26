@@ -2,10 +2,10 @@ package tasks
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 
 	"github.com/labstack/echo/v4"
+	myerror "github.com/yuya0729/light-clean-architecture/cmd/app/Driver/error"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 )
 
@@ -29,7 +29,7 @@ func GetTasks(c echo.Context, DB *sql.DB) ([]*entity.Task, error) {
 	}
 	for rows.Next() {
 		if err := rows.Scan(&task.ID, &task.Title, &task.Name); err != nil {
-			return nil, errors.New("connot connect SQL")
+			return nil, err
 		}
 		tasks = append(tasks, &entity.Task{ID: task.ID, Title: task.Title, Name: task.Name})
 	}
@@ -62,7 +62,7 @@ func CreateTask(c echo.Context, DB *sql.DB, userID int, title string) error {
 	ins, err := DB.Prepare("INSERT INTO tasks (user_id, title) VALUES ($1, $2)")
 	if err != nil {
 		log.Println(err)
-		return err
+		return myerror.New(404, err.Error())
 	}
 	ins.Exec(userID, title)
 	return nil

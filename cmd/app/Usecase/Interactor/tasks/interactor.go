@@ -1,8 +1,6 @@
 package tasks
 
 import (
-	"errors"
-
 	"github.com/labstack/echo/v4"
 	gateway "github.com/yuya0729/light-clean-architecture/cmd/app/Adapter/Gateway"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
@@ -24,14 +22,14 @@ func GetTasks(c echo.Context) ([]*entity.Task, error) {
 func BindCreateUpdateTask(c echo.Context) (*entity.CreateTask, error) {
 	task := entity.CreateTask{}
 	if err := c.Bind(&task); err != nil {
-		return nil, errors.New("bad request")
+		return nil, err
 	}
 	return &task, nil
 }
 
 func IsExistsTask(c echo.Context, userID int, taskID int) error {
 	if _, err := gateway.GetTask(c, userID, taskID); err != nil {
-		return errors.New("not found")
+		return err
 	}
 	return nil
 }
