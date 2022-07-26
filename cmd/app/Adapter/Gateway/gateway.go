@@ -45,6 +45,6 @@ func UpdateTask(c echo.Context, userID int, title string, taskID int) *myerror.M
 	return tasks.UpdateTask(c, DB, userID, title, taskID)
 }
 
-func DeleteTask(c echo.Context, userID int, taskID int) error {
+func DeleteTask(c echo.Context, userID int, taskID int) *myerror.MyError {
 	return tasks.DeleteTask(c, DB, userID, taskID)
 }

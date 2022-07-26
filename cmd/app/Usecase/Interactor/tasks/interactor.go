@@ -49,7 +49,7 @@ func UpdateTask(c echo.Context, userID int, title string, taskID int) *myerror.M
 	return nil
 }
 
-func DeleteTask(c echo.Context, userID int, taskID int) error {
+func DeleteTask(c echo.Context, userID int, taskID int) *myerror.MyError {
 	if err := gateway.DeleteTask(c, userID, taskID); err != nil {
 		return err
 	}

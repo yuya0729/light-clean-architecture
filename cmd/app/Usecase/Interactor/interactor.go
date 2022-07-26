@@ -46,6 +46,6 @@ func IsExistsTask(c echo.Context, userID int, taskID int) *myerror.MyError {
 	return tasks.IsExistsTask(c, userID, taskID)
 }
 
-func DeleteTask(c echo.Context, userID int, taskID int) error {
+func DeleteTask(c echo.Context, userID int, taskID int) *myerror.MyError {
 	return tasks.DeleteTask(c, userID, taskID)
 }

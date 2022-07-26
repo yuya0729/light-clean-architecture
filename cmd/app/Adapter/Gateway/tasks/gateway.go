@@ -78,11 +78,11 @@ func UpdateTask(c echo.Context, DB *sql.DB, userID int, title string, taskID int
 	return nil
 }
 
-func DeleteTask(c echo.Context, DB *sql.DB, userID int, taskID int) error {
+func DeleteTask(c echo.Context, DB *sql.DB, userID int, taskID int) *myerror.MyError {
 	del, err := DB.Prepare("DELETE FROM tasks WHERE id = $1 AND user_id = $2")
 	if err != nil {
 		log.Println(err)
-		return err
+		return myerror.New(404, err.Error())
 	}
 	del.Exec(taskID, userID)
 	return nil

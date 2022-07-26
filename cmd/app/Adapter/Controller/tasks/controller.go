@@ -1,7 +1,6 @@
 package tasks
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -54,7 +53,6 @@ func CreateTask(c echo.Context) error {
 	return c.JSON(http.StatusOK, `{"code": 200, "message": "ok"}`)
 }
 
-// TODO: error format
 func UpdateTask(c echo.Context) error {
 	taskID, e := strconv.Atoi(c.Param("id"))
 	if e != nil {
@@ -83,26 +81,28 @@ func UpdateTask(c echo.Context) error {
 	return c.JSON(http.StatusOK, `{"code": 200, "message": "ok"}`)
 }
 
-// TODO: error format
 func DeleteTask(c echo.Context) error {
-	taskID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
+	taskID, e := strconv.Atoi(c.Param("id"))
+	if e != nil {
+		msg := myerror.New(400, e.Error())
 		return c.JSON(http.StatusBadRequest, msg)
 	}
-	userID, err := strconv.Atoi(c.QueryParam("user_id"))
-	if err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
+	userID, e := strconv.Atoi(c.QueryParam("user_id"))
+	if e != nil {
+		msg := myerror.New(400, e.Error())
 		return c.JSON(http.StatusBadRequest, msg)
 	}
-	if err = interactor.IsExistsTask(c, userID, taskID); err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusNotFound, msg)
+	if err := interactor.IsExistsTask(c, userID, taskID); err != nil {
+		switch err.Code {
+		case 404:
+			return c.JSON(http.StatusNotFound, err)
+		}
 	}
-
-	if err = interactor.DeleteTask(c, userID, taskID); err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusInternalServerError, msg)
+	if err := interactor.DeleteTask(c, userID, taskID); err != nil {
+		switch err.Code {
+		case 404:
+			return c.JSON(http.StatusNotFound, err)
+		}
 	}
 	return c.JSON(http.StatusOK, `{"message": "ok"}`)
 }
