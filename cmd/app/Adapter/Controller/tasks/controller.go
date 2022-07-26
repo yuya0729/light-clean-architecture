@@ -10,14 +10,15 @@ import (
 )
 
 // TODO:
-// err != nil{return c.JSON(statuscode, err)}
-// みたいな感じにする？
-
-// TODO:
 // interface導入？
 
 // TODO:
 // controllerでやっているバリデーションを各層に分散
+// ref: https://qiita.com/nakaakist/items/11195ac5290450fbc9f9
+
+// TODO:
+// errorの体系化
+// ref: https://zenn.dev/yagi_eng/articles/go-error-handling
 
 func GetTasks(c echo.Context) error {
 	t, err := interactor.GetTasks(c)
@@ -34,9 +35,11 @@ func CreateTask(c echo.Context) error {
 		msg := fmt.Sprintf(`{"message": %s`, err)
 		return c.JSON(http.StatusBadRequest, msg)
 	}
-	if err = interactor.IsExistsUser(c, task.UserID); err != nil {
-		msg := fmt.Sprintf(`{"message": %s`, err)
-		return c.JSON(http.StatusNotFound, msg)
+	if e := interactor.IsExistsUser(c, task.UserID); e != nil {
+		if e.Code == 404 {
+			return c.JSON(http.StatusNotFound, e)
+		}
+		return c.JSON(http.StatusNotFound, err)
 	}
 	if err = interactor.CreateTask(c, task.UserID, task.Title); err != nil {
 		msg := fmt.Sprintf(`{"message": %s`, err)

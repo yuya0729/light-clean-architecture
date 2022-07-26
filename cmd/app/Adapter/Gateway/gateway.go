@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/labstack/echo/v4"
+	myerror "github.com/yuya0729/light-clean-architecture/cmd/app/Driver/error"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 
 	tasks "github.com/yuya0729/light-clean-architecture/cmd/app/Adapter/Gateway/tasks"
@@ -23,7 +24,7 @@ func GetUsers(c echo.Context) ([]*entity.User, error) {
 	return users.GetUsers(c, DB)
 }
 
-func GetUser(c echo.Context, userID int) (*entity.User, error) {
+func GetUser(c echo.Context, userID int) (*entity.User, *myerror.MyError) {
 	return users.GetUser(c, DB, userID)
 }
 

@@ -2,6 +2,7 @@ package interactor
 
 import (
 	"github.com/labstack/echo/v4"
+	myerror "github.com/yuya0729/light-clean-architecture/cmd/app/Driver/error"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 
 	tasks "github.com/yuya0729/light-clean-architecture/cmd/app/Usecase/Interactor/tasks"
@@ -21,7 +22,7 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 	return users.GetUser(c, userID)
 }
 
-func IsExistsUser(c echo.Context, userID int) error {
+func IsExistsUser(c echo.Context, userID int) *myerror.MyError {
 	return users.IsExistsUser(c, userID)
 }
 

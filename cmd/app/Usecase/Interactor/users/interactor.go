@@ -3,6 +3,7 @@ package users
 import (
 	"github.com/labstack/echo/v4"
 	gateway "github.com/yuya0729/light-clean-architecture/cmd/app/Adapter/Gateway"
+	myerror "github.com/yuya0729/light-clean-architecture/cmd/app/Driver/error"
 	entity "github.com/yuya0729/light-clean-architecture/cmd/app/Entity"
 )
 
@@ -28,9 +29,9 @@ func GetUser(c echo.Context, userID int) (*entity.User, error) {
 	return u, nil
 }
 
-func IsExistsUser(c echo.Context, userID int) error {
+func IsExistsUser(c echo.Context, userID int) *myerror.MyError {
 	if _, err := gateway.GetUser(c, userID); err != nil {
-		return err
+		return myerror.New(404, err.Error())
 	}
 	return nil
 }
